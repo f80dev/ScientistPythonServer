@@ -4,25 +4,21 @@
 #Construction et installation de l'image
 #docker build -t f80hub/scientist_python_server_arm . & docker push f80hub/scientist_python_server_arm:latest
 #pour les problemes de droit sur les répertoires : su -c "setenforce 0"
-#docker rm -f scientist_python_server_x86 && docker pull f80hub/scientist_python_server_x86:latest && docker run --restart=always -p 7080:7080 --name scientist_python_server_x86 -d f80hub/scientist_python_server_x86:latest 7080
+#docker rm -f scientist_python_server_arm && docker pull f80hub/scientist_python_server_arm:latest && docker run --restart=always -p 6080:6080 --name scientist_python_server_arm -d f80hub/scientist_python_server_arm:latest 6080
 
-FROM python:3.7.4-alpine
+
+FROM arm32v7/python:3-alpine
 
 RUN apk update
+RUN apk upgrade
 
+
+RUN apk --no-cache --update-cache add gcc g++ gfortran python3-dev py3-pip build-base wget freetype-dev libpng-dev openblas-dev
 RUN pip3 install --upgrade pip
-RUN apk add py-setuptools
-#Installation des librairies complémentaires
-RUN apk add py3-numpy
-RUN apk add py3-scipy
-
-RUN apk --no-cache --update-cache add gcc g++ gfortran python python3-dev py-pip build-base wget freetype-dev libpng-dev openblas-dev
-RUN pip3 install Cython
-
-RUN pip3 install numpy
-RUN pip3 install pandas
-RUN pip3 -v install scipy
-RUN pip3 install scikit-learn
+RUN pip3 install cython
+RUN apk add py3-numpy py3-setuptools
+RUN pip3 -v install pandas==0.23.4
+RUN pip3 -v install scikit-learn
 RUN pip3 -v install networkx
 RUN pip3 -v install hdbscan
 RUN pip3 -v install matplotlib

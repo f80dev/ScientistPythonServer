@@ -17,5 +17,10 @@ Les libraries installées sont
 - Pandas:
 - Scikit-Learn: 
 - NetworkX: pour la gestion des graphes
-- HDBscan: un algorithme de clustering non inclu dans Scikit-Learn
-- matplotlib:   
+- HDBscan: un algorithme puissant de clustering non inclu dans Scikit-Learn
+- matplotlib:
+
+
+#Gestion sous jenkins
+docker rm -f jenkins && docker run --name jenkins -d -u root -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkinsci/blueocean
+   
