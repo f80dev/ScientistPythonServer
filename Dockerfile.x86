@@ -2,11 +2,11 @@
 #sudo curl -sSL get.docker.com | sh
 
 #Construction et installation de l'image
-#docker build -t f80hub/scientist_python_server_arm . & docker push f80hub/scientist_python_server_arm:latest
+#docker build -t f80hub/scientist_python_server_x86 . & docker push f80hub/scientist_python_server_x86:latest
 #pour les problemes de droit sur les répertoires : su -c "setenforce 0"
-#docker rm -f scientist_python_server_arm && docker pull f80hub/scientist_python_server_arm:latest && docker run --restart=always -p 7080:7080 --name scientist_python_server_arm -d f80hub/scientist_python_server_arm:latest 7080
+#docker rm -f scientist_python_server_x86 && docker pull f80hub/scientist_python_server_x86:latest && docker run --restart=always -p 7080:7080 --name scientist_python_server_x86 -d f80hub/scientist_python_server_x86:latest 7080
 
-FROM python:3.7.4-alpine
+FROM python:3.7.6-alpine
 
 RUN apk update
 

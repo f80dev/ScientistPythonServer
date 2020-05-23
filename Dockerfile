@@ -2,30 +2,47 @@
 #sudo curl -sSL get.docker.com | sh
 
 #Construction et installation de l'image
-#docker build -t f80hub/scientist_python_server_arm . & docker push f80hub/scientist_python_server_arm:latest
+
 #pour les problemes de droit sur les répertoires : su -c "setenforce 0"
-#docker rm -f scientist_python_server_arm && docker pull f80hub/scientist_python_server_arm:latest && docker run --restart=always -p 6080:6080 --name scientist_python_server_arm -d f80hub/scientist_python_server_arm:latest 6080
+#docker rm -f scientist_python_server_x86 && docker pull f80hub/scientist_python_server_x86:latest && docker run --restart=always -p 7080:7080 --name scientist_python_server_x86 -d f80hub/scientist_python_server_x86:latest 7080
+
+#pour x86
+FROM python:3.7.7-alpine
+#docker build -t f80hub/scientist_python_server_x86 . & docker push f80hub/scientist_python_server_x86:latest
+
+#pour arm
+#FROM arm32v7/python:3.8.2-alpine3.11
+#docker build -t f80hub/scientist_python_server_arm . & docker push f80hub/scientist_python_server_arm:latest
 
 
-FROM arm32v7/python:3-alpine
+RUN echo "http://dl-8.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+RUN echo "http://dl-8.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
 RUN apk update
-RUN apk upgrade
 
-
-RUN apk --no-cache --update-cache add gcc g++ gfortran python3-dev py3-pip build-base wget freetype-dev libpng-dev openblas-dev
 RUN pip3 install --upgrade pip
-RUN pip3 install cython
-RUN apk add py3-numpy py3-setuptools
-RUN pip3 -v install pandas==0.23.4
-RUN pip3 -v install scikit-learn
-RUN pip3 -v install networkx
-RUN pip3 -v install hdbscan
-RUN pip3 -v install matplotlib
+RUN apk add py-setuptools
+#Installation des librairies complémentaires
+
+#fdsfds
+
+
+RUN apk --no-cache --update-cache add gcc g++ gfortran python python3-dev py-pip build-base wget freetype-dev libpng-dev openblas-dev
+RUN pip3 install Cython
+
+RUN apk add py3-scipy
+RUN apk add --update --no-cache py3-numpy py3-pandas@testing
+RUN apk add py3-scikit-learn
+RUN apk add py3-matplotlib
+
+RUN pip3 install networkx
+#RUN pip3 install --no-binary :all: hdbscan
+RUN easy_install folium
 
 #Installation des composants pour l'architecture
-RUN pip3 -v install Flask
-RUN pip3 -v install flask-cors
+RUN pip3 install Flask
+RUN pip3 install flask-cors
 
 #Installation des composants de securisation du serveur
 #RUN apk add py3-openssl
