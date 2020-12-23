@@ -19,32 +19,39 @@ FROM python:3.10.0a3-slim-buster
 #RUN echo "http://dl-8.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
 #RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
-RUN apt update
-RUN apt upgrade
+RUN apk update
 
 RUN pip3 install --upgrade pip
+RUN apk add py-setuptools
 #Installation des librairies complémentaires
 
 #fdsfds
 
 
-RUN apt get gcc g++ gfortran python python3-dev py-pip build-base wget freetype-dev libpng-dev openblas-dev
+RUN apk --no-cache --update-cache add gcc g++ gfortran python python3-dev py-pip build-base wget freetype-dev libpng-dev openblas-dev
 RUN pip3 install Cython
-RUN pip3 install wheel
 
-RUN pip3 install scipy
-RUN pip3 install numpy
+RUN apk add openblas
+
+RUN apk add py3-scipy
+RUN apk add py3-numpy
+
 RUN pip3 install pandas
 RUN pip3 install networkx
 #RUN pip3 install --no-binary :all: hdbscan
 RUN easy_install folium
-RUN pip3 install matplotlib
+RUN apk add py3-matplotlib
 
 #Installation des composants pour l'architecture
 #RUN pip3 install Flask
 #RUN pip3 install flask-cors
 
-RUN pip3 install scikit-learn
+# Install numpy, pandas, scipy and scikit
+RUN apk add py3-scikit-learn
+
+RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+RUN apk add --update --no-cache py3-numpy py3-pandas@testing
+RUN pip3 install pandas
 
 #Installation des composants de securisation du serveur
 #RUN apk add py3-openssl
